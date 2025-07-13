@@ -1,45 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Xalo Store</title>
-  <meta charset="utf-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Xalostore</title>
   <style>
-    body { font-family: Arial; padding: 2rem; background: #f0f0f0; }
-    h1 { color: #222; }
-    .app { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
-    .app img { width: 64px; height: 64px; border-radius: 12px; float: right; margin-left: 1rem; }
-    a.download { display: inline-block; margin-top: 0.5rem; background: #007bff; color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; }
-    a.download:hover { background: #0056b3; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f4f4f4; color: #333; }
+    header, .tabbar { position: fixed; width: 100%; background: #fff; border-top: 1px solid #ccc; z-index: 999; }
+    header { top: 0; padding: 1rem; font-size: 1.4rem; font-weight: bold; background-color: #6156e2; color: #fff; }
+    .content { padding: 5rem 1rem 4rem 1rem; }
+    .app-card { background: #fff; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.05); display: flex; align-items: center; }
+    .app-card img { width: 64px; height: 64px; border-radius: 12px; margin-right: 1rem; }
+    .app-info { flex-grow: 1; }
+    .app-info h2 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+    .app-info p { font-size: 0.9rem; color: #555; }
+    .app-card a { background: #6156e2; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem; }
+    .tabbar { bottom: 0; display: flex; justify-content: space-around; padding: 0.5rem 0; }
+    .tabbar button { background: none; border: none; font-size: 1rem; color: #6156e2; }
+    .hidden { display: none; }
+    #searchBar { width: 100%; padding: 0.6rem; border: 1px solid #ccc; margin-bottom: 1rem; border-radius: 6px; }
+    #news { margin-bottom: 1rem; }
+    #news h3 { margin-bottom: 0.5rem; }
+    .news-item { background: #e9e9ff; padding: 0.5rem 1rem; border-left: 4px solid #6156e2; margin-bottom: 1rem; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <h1>Xalo App Store</h1>
-  <div id="apps">Lade Apps...</div>
+  <header id="pageTitle">Xalostore</header>
+
+  <div class="content">
+    <div id="homePage">
+      <input type="text" id="searchBar" placeholder="🔍 Search apps..." oninput="renderApps()" />
+      <div id="news"></div>
+      <div id="apps">Loading...</div>
+    </div>
+
+    <div id="settingsPage" class="hidden">
+      <h2>⚙️ Settings</h2>
+      <p>This is a placeholder for settings.</p>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <button onclick="showPage('home')">🏠</button>
+    <button onclick="showPage('settings')">⚙️</button>
+  </nav>
 
   <script>
+    let storeData = {};
+    let filteredApps = [];
+
     fetch('source.json')
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
-        const appList = data.apps || [];
-        const container = document.getElementById('apps');
-        container.innerHTML = '';
-        appList.forEach(app => {
-          const latestVersion = app.versions?.[0];
-          const el = document.createElement('div');
-          el.className = 'app';
-          el.innerHTML = `
-            <img src="${app.icon || ''}" alt="Icon">
-            <h2>${app.name}</h2>
-            <p>${app.description || 'Keine Beschreibung verfügbar.'}</p>
-            <a class="download" href="${latestVersion?.url}" target="_blank">⬇️ Install .ipa</a>
-          `;
-          container.appendChild(el);
-        });
+        storeData = data;
+        filteredApps = data.apps;
+        renderApps();
+        renderNews();
       })
       .catch(err => {
         document.getElementById('apps').innerText = 'Fehler beim Laden der App-Daten.';
         console.error(err);
       });
+
+    function renderApps() {
+      const container = document.getElementById('apps');
+      const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+      container.innerHTML = '';
+
+      const appsToShow = storeData.apps.filter(app =>
+        app.name.toLowerCase().includes(searchTerm)
+      );
+
+      if (appsToShow.length === 0) {
+        container.innerHTML = '<p>Keine App gefunden.</p>';
+        return;
+      }
+
+      appsToShow.forEach(app => {
+        const version = app.versions?.[0];
+        const card = document.createElement('div');
+        card.className = 'app-card';
+        card.innerHTML = `
+          <img src="${app.iconURL}" alt="${app.name}" />
+          <div class="app-info">
+            <h2>${app.name}</h2>
+            <p>${app.subtitle || ''}</p>
+            ${version?.downloadURL ? `<a href="${version.downloadURL}" target="_blank">⬇️ Install .ipa</a>` : '<em>No file</em>'}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderNews() {
+      const newsContainer = document.getElementById('news');
+      if (!storeData.news || storeData.news.length === 0) return;
+
+      newsContainer.innerHTML = '<h3>📰 News</h3>';
+      storeData.news.forEach(news => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-item';
+        newsItem.innerHTML = `
+          <strong>${news.title}</strong><br>
+          <small>${news.caption}</small><br>
+          <a href="${news.url}" target="_blank">Details</a>
+        `;
+        newsContainer.appendChild(newsItem);
+      });
+    }
+
+    function showPage(page) {
+      document.getElementById('pageTitle').textContent = page === 'settings' ? 'Einstellungen' : 'Xalostore';
+      document.getElementById('homePage').classList.toggle('hidden', page !== 'home');
+      document.getElementById('settingsPage').classList.toggle('hidden', page !== 'settings');
+    }
   </script>
 </body>
 </html>
