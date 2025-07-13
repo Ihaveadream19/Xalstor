@@ -46,27 +46,50 @@
       },
       "patreon": {}
     },
+   {
+  "name": "Xalostagram",
+  "bundleIdentifier": "com.burbn.instagram",
+  "marketplaceID": "",
+  "developerName": "Xalo",
+  "subtitle": "Modded Instagram with extras",
+  "localizedDescription": "A tweaked version of Instagram – available only on Xalostore.",
+  "iconURL": "https://i.imgur.com/YynrWtw.png",
+  "tintColor": "#a204fc",
+  "category": "social",
+  "screenshots": [],
+  "versions": [
     {
-      "name": "Xalostagram",
-      "bundleIdentifier": "com.burbn.instagram",
-      "marketplaceID": "",
-      "developerName": "Example Developer",
-      "subtitle": "An awesome app.",
-      "localizedDescription": "This is an awesome app only available on Xalostore.",
-      "iconURL": "https://i.imgur.com/YynrWtw.png",
-      "tintColor": "#a204fc",
-      "category": "other",
-      "screenshots": [],
-      "versions": [
-        {
-          "version": "388.0.0",
-          "date": "2025-07-09T14:11:00+02:00",
-          "localizedDescription": null,
-          "downloadURL": "https://apps.apple.com/de/app/instagram/id389801252",
-          "size": 203200000,
-          "buildVersion": null,
-          "minOSVersion": null
-        }
+      "version": "388.0.0",
+      "date": "2025-07-09T18:00:00+02:00",
+      "localizedDescription": "Modded Instagram IPA – ads removed, feed tweaked.",
+      "downloadURL": "https://github.com/Ihaveadream19/Xalstor/releases/download/untagged-7d3a53b40a8c14f36cae/Instagram--Xalo.ipa",
+      "size": 203200000,
+      "buildVersion": "388000",
+      "minOSVersion": "14.0"
+    }
+  ],
+  "appPermissions": {
+    "entitlements": [],
+    "privacy": {
+      "NSAdvertisingAttributionReportEndpoint": "https://facebook.com",
+      "NSBluetoothAlwaysUsageDescription": "This allows your phone to find and connect to the glasses using a Bluetooth connection.",
+      "NSCalendarsUsageDescription": "This will let Instagram sync events to your calendar.",
+      "NSCalendarsWriteOnlyAccessUsageDescription": "This will let Instagram sync events to your calendar.",
+      "NSCameraUsageDescription": "Instagram uses your device's camera to do things like help you take photos, record videos and use effects.",
+      "NSContactsUsageDescription": "Instagram will use your contacts to suggest people and things you care about, and offer a better service. Your contacts will be periodically synced and securely stored on Instagram’s servers.",
+      "NSFaceIDUsageDescription": "Enable Face ID for quick and secure authentication on Instagram.",
+      "NSFocusStatusUsageDescription": "This allows Instagram to check to see if you’ve been missing notifications from friends. You can always change this later in settings.",
+      "NSLocationAlwaysAndWhenInUseUsageDescription": "Instagram uses this to make some features work, personalize content and help people find places. You can change your preferences at any time in your device settings.",
+      "NSLocationUsageDescription": "Instagram uses this to make some features work, personalize content and help people find places. You can change your preferences at any time in your device settings.",
+      "NSLocationWhenInUseUsageDescription": "Instagram uses this to make some features work, personalize content and help people find places. You can change your preferences at any time in your device settings.",
+      "NSMicrophoneUsageDescription": "Instagram uses your device's microphone to do things like help you record videos and preview audio effects.",
+      "NSPhotoLibraryAddUsageDescription": "This lets you save photos and videos to your Camera Roll.",
+      "NSPhotoLibraryUsageDescription": "Instagram uses access to your camera roll to do things like help you share photos and videos to Instagram, apply effects and suggest photos and videos to share.",
+      "NSUserTrackingUsageDescription": "This allows Instagram to provide you with a better ads experience."
+    }
+  },
+  "patreon": {}
+}
       ],
       "appPermissions": {
         "entitlements": [],
